@@ -8,11 +8,12 @@ import {
   Breadcrumbs,
   TextField,
   Button,
+  Divider,
 } from "@material-ui/core";
-import { Layout } from "../components";
 import { NavLink } from "react-router-dom";
 import { SketchPicker } from "react-color";
 import DrawingBoard from "./components/DrawingBoard";
+import Palette from "./components/Palette";
 
 const cols = 32;
 let initialBoard = [];
@@ -22,7 +23,20 @@ for (let i = 0; i < cols * cols; i++) {
 
 export default function CreatePost() {
   const [brushColor, setBrushColor] = useState("#fff");
-  const handleBrushColorChange = (color) => setBrushColor(color.hex);
+  const handleBrushColorChange = (color) => {
+    setBrushColor(color.hex);
+    let newColors;
+    if (colorHistory.length > 9) {
+      newColors = [...colorHistory.slice(1), color.hex];
+      setColorHistory(newColors);
+    } else {
+      newColors = [...colorHistory, color.hex];
+      setColorHistory(newColors);
+    }
+    localStorage.setItem("colors", JSON.stringify(newColors));
+  };
+
+  const [colorHistory, setColorHistory] = useState([]);
 
   const [pixels, setPixels] = useState(initialBoard);
   const handleBrushClick = (index, isEraser = false) => {
@@ -42,8 +56,10 @@ export default function CreatePost() {
   };
 
   const [body, setBody] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     axios
       .post("/api/v1/posts", {
         body,
@@ -58,11 +74,15 @@ export default function CreatePost() {
     let draft = localStorage.getItem("draft");
     draft = draft ? JSON.parse(draft) : initialBoard;
     setPixels(draft);
+
+    let colors = localStorage.getItem("colors");
+    colors = colors ? JSON.parse(colors) : [];
+    setColorHistory(colors);
   }, []);
 
   return (
-    <Layout>
-      <Box py={1}>
+    <>
+      <Box py={2}>
         <Container>
           <Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" to="/" component={NavLink}>
@@ -72,24 +92,25 @@ export default function CreatePost() {
           </Breadcrumbs>
         </Container>
       </Box>
-      <Box py={1}>
-        <Container>
+      <Divider />
+      <Container>
+        <Box py={1}>
           <Grid container justify="center" spacing={3}>
-            <Grid item xs={3}>
+            <Grid item xs={12} lg={3}>
               <SketchPicker
                 color={brushColor}
                 onChangeComplete={handleBrushColorChange}
               />
+              <Palette colors={colorHistory} setColor={setBrushColor} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6}>
               <DrawingBoard
-                brushColor={brushColor}
                 clearBoard={clearBoard}
                 pixels={pixels}
                 handleBrushClick={handleBrushClick}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={12} lg={3}>
               <form onSubmit={handleSubmit}>
                 <TextField
                   required
@@ -104,15 +125,20 @@ export default function CreatePost() {
                   onChange={(e) => setBody(e.target.value)}
                 />
                 <Box display="flex" justifyContent="flex-end">
-                  <Button type="submit" variant="contained" color="primary">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
+                  >
                     Post
                   </Button>
                 </Box>
               </form>
             </Grid>
           </Grid>
-        </Container>
-      </Box>
-    </Layout>
+        </Box>
+      </Container>
+    </>
   );
 }

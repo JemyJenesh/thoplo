@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "56.25%", // 16:9
   },
+  postBody: {
+    padding: theme.spacing(0, 2),
+    marginBottom: theme.spacing(2),
+  },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -56,7 +60,7 @@ export default function Post({ post }) {
         title={user.name}
         subheader={formatDistanceToNow(new Date(created_at))}
       />
-      <CardContent>
+      <CardContent className={classes.postBody}>
         <Typography variant="body2" color="textSecondary" component="p">
           {body}
         </Typography>

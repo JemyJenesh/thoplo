@@ -1,11 +1,18 @@
 import React from "react";
 import Post from "./Post";
-import { useIndex } from "../../../api";
+import { useIndex } from "../../api";
+import PostSkeleton from "./PostSkeleton";
 
 export default function PostList() {
   const { data, isLoading } = useIndex("api/v1/posts");
 
-  if (isLoading) return <div>...loading...</div>;
+  if (isLoading)
+    return (
+      <>
+        <PostSkeleton />
+        <PostSkeleton />
+      </>
+    );
   return (
     <div>
       {data.map((post) => (

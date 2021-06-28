@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  avatar: {
+    height: theme.spacing(4),
+    width: theme.spacing(4),
+  },
 }));
 
 export default function MenuAppBar() {
@@ -37,8 +41,8 @@ export default function MenuAppBar() {
   };
 
   return (
-    <AppBar position="sticky" elevation={0}>
-      <Toolbar>
+    <AppBar position="sticky" elevation={1}>
+      <Toolbar variant="dense">
         {/* <IconButton
           edge="start"
           className={classes.menuButton}
@@ -51,14 +55,12 @@ export default function MenuAppBar() {
           Thoplo
         </Typography>
 
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleMenu}
-          color="inherit"
-        >
-          <Avatar alt={user?.email} src={user?.avatar} />
+        <IconButton onClick={handleMenu} color="inherit" size="small">
+          <Avatar
+            className={classes.avatar}
+            alt={user?.email}
+            src={user?.avatar}
+          />
         </IconButton>
         <Menu
           id="menu-appbar"

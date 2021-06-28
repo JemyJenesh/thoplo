@@ -1,15 +1,17 @@
 import React, { useState, useRef } from "react";
 import { exportComponentAsPNG } from "react-component-export-image";
-
-import { Box, CircularProgress, Button } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Box, CircularProgress, Button, useTheme } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 import Pixel from "./Pixel";
 
 const cols = 32;
-const boxSize = 15;
 
-function DrawingBoard({ brushColor, clearBoard, pixels, handleBrushClick }) {
+function DrawingBoard({ clearBoard, pixels, handleBrushClick }) {
+  const theme = useTheme();
+  const lgScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const boxSize = lgScreen ? 15 : 10;
   const imageRef = useRef();
   const [showGrid, setShowGrid] = useState(true);
   const toggleGrid = () => setShowGrid((prev) => !prev);

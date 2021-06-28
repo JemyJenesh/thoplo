@@ -10,15 +10,17 @@ export default function Posts() {
       <Box py={3}>
         <Container>
           <Grid container spacing={3}>
-            <Grid item xs={3}>
-              <Link to="/create" component={NavLink}>
-                Create your pixel art
-              </Link>
+            <Grid item xs={12} lg={3}>
+              <div style={{ position: "sticky", top: 80 }}>
+                <Link to="/create" component={NavLink}>
+                  Create pixel art
+                </Link>
+              </div>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} lg={6}>
               <PostList />
             </Grid>
-            <Grid item xs={3}></Grid>
+            <Grid item xs={12} lg={3}></Grid>
           </Grid>
         </Container>
       </Box>

@@ -2,7 +2,7 @@ import React from "react";
 import Pixel from "./Pixel";
 
 const cols = 32;
-const boxSize = 15;
+const boxSize = 10;
 
 export default React.forwardRef((props, ref) => {
   const { board } = props;
