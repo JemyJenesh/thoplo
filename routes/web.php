@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AppController::class, 'getApp'])->middleware('auth');
+Route::get('/login', [AppController::class, 'login'])->name('login')->middleware('guest');
+Route::get('/login/{social}', [AppController::class, 'getSocialRedirect'])->middleware('guest');
+Route::get('/login/{social}/callback',  [AppController::class, 'getSocialCallback'])->middleware('guest');
+Route::get('/logout', function () {
+  Auth::logout();
+})->middleware('auth');
