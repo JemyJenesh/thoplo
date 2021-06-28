@@ -15,10 +15,11 @@ use App\Http\Controllers\AppController;
 |
 */
 
-Route::get('/', [AppController::class, 'getApp'])->middleware('auth');
+// Route::get('/', [AppController::class, 'getApp'])->middleware('auth');
 Route::get('/login', [AppController::class, 'login'])->name('login')->middleware('guest');
 Route::get('/login/{social}', [AppController::class, 'getSocialRedirect'])->middleware('guest');
 Route::get('/login/{social}/callback',  [AppController::class, 'getSocialCallback'])->middleware('guest');
 Route::get('/logout', function () {
   Auth::logout();
 })->middleware('auth');
+Route::get('{any}', [AppController::class, 'getApp'])->where('any', '.*')->middleware('auth');

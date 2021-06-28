@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 import Posts from "./posts";
+import CreatePost from "./posts/CreatePost";
 import { ScreenLoader } from "./components";
 
 import ThemeContextProvider, { ThemeContext, theme } from "./theme";
@@ -25,6 +26,7 @@ export default function Root() {
       <Paper square elevation={0} style={{ minHeight: "100%" }}>
         <Switch>
           <Route exact path="/" component={Posts} />
+          <Route path="/create" component={CreatePost} />
         </Switch>
       </Paper>
     </ThemeProvider>

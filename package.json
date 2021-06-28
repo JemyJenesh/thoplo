@@ -27,6 +27,9 @@
         "@material-ui/lab": "^4.0.0-alpha.58",
         "@reduxjs/toolkit": "^1.6.0",
         "clsx": "^1.1.1",
+        "date-fns": "^2.22.1",
+        "react-color": "^2.19.3",
+        "react-component-export-image": "^1.0.6",
         "react-query": "^3.18.0",
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0"
