@@ -22,7 +22,7 @@ class UserResource extends JsonResource
       'avatar' => $this->avatar,
       'username' => $this->username,
       $this->mergeWhen($request->user, [
-        'posts' => PostResource::collection($this->posts),
+        'posts' => PostResource::collection($this->posts()->latest()->get()),
         'posts_count' => count($this->posts),
         'received_likes_count' => count($this->receivedLikes),
       ]),

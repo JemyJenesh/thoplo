@@ -1,49 +1,39 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import CardHeader from "@material-ui/core/CardHeader";
 import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
+import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import { formatDistanceToNow } from "date-fns";
-import PixelPreview from "./PixelPreview";
 import { useMutation, useQueryClient } from "react-query";
 import { NavLink } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import PixelPreview from "./PixelPreview";
+import CommentList from "./CommentList";
+import SendIcon from "@material-ui/icons/Send";
+
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import Collapse from "@material-ui/core/Collapse";
+
+import { UserContext } from "../../user/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 345,
     marginBottom: theme.spacing(3),
   },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
-  },
   postBody: {
     padding: theme.spacing(0, 2),
     marginBottom: theme.spacing(2),
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
-  },
-  avatar: {
-    backgroundColor: red[500],
   },
   cardTitle: {
     textDecoration: "none",
@@ -53,15 +43,41 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "underline",
     },
   },
+  cardActions: {
+    padding: theme.spacing(0, 2),
+  },
+  commentBox: {
+    marginLeft: theme.spacing(2),
+  },
+  commentText: {
+    margin: theme.spacing(0, 1, 0, "auto"),
+  },
+  sendBtn: {
+    marginLeft: theme.spacing(2),
+  },
 }));
 
 export default function Post({ post, userId = null }) {
   const classes = useStyles();
-  const { id, has_user_liked, user, body, board, created_at, likes_count } =
-    post;
+  const {
+    id,
+    has_user_liked,
+    user,
+    body,
+    board,
+    created_at,
+    likes_count,
+    comments,
+    comments_count,
+  } = post;
 
+  const [comment, setComment] = useState("");
+  const [open, setOpen] = useState(false);
+  const toggleCommentBox = () => setOpen(!open);
+
+  const { user: authUser } = useContext(UserContext);
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(() => axios.post(`/posts/${id}/likes`), {
+  const likeMutation = useMutation(() => axios.post(`/posts/${id}/likes`), {
     onMutate: () => {
       if (userId) {
         let user = queryClient.getQueryData(["/users", userId]).data;
@@ -97,6 +113,35 @@ export default function Post({ post, userId = null }) {
     },
   });
 
+  const commentMutation = useMutation(
+    () =>
+      axios.post(`/posts/${id}/comments`, {
+        body: comment,
+      }),
+    {
+      onMutate: () => {
+        const data = queryClient.getQueryData("/posts").data.map((post) =>
+          post.id === id
+            ? {
+                ...post,
+                comments: [
+                  {
+                    id: new Date(),
+                    body: comment,
+                    created_at: new Date(),
+                    user: authUser,
+                  },
+                  ...comments,
+                ],
+              }
+            : post
+        );
+        queryClient.setQueriesData("/posts", { data });
+        setComment("");
+      },
+    }
+  );
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -108,11 +153,11 @@ export default function Post({ post, userId = null }) {
             to={`/users/${user.username}`}
           />
         }
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
         title={
           <Typography
             component={NavLink}
@@ -134,19 +179,66 @@ export default function Post({ post, userId = null }) {
         <PixelPreview board={board} />
       </Box>
       <Divider />
-      <Box display="flex" p={1} alignItems="center" style={{ gap: 4 }}>
-        <Typography>{likes_count}</Typography>
-        <ThumbUpAltIcon fontSize="small" color="primary" />
-      </Box>
+      <CardContent className={classes.cardActions}>
+        <Box display="flex" alignItems="center">
+          <IconButton
+            color={has_user_liked ? "primary" : "default"}
+            onClick={likeMutation.mutate}
+          >
+            <ThumbUpAltIcon />
+          </IconButton>
+          <Typography>{likes_count}</Typography>
+          <Typography className={classes.commentText}>
+            {comments_count}
+          </Typography>
+          <ChatBubbleOutlineIcon />
+        </Box>
+      </CardContent>
       <Divider />
-      <CardActions disableSpacing>
-        <IconButton
-          color={has_user_liked ? "primary" : "default"}
-          onClick={mutate}
-        >
-          <ThumbUpAltIcon />
-        </IconButton>
-      </CardActions>
+      <CardContent>
+        <Box display="flex" alignItems="flex-start">
+          <Avatar
+            src={user.avatar}
+            component={NavLink}
+            to={`/users/${user.username}`}
+          />
+          <FormControl
+            variant="outlined"
+            fullWidth
+            className={classes.commentBox}
+          >
+            <OutlinedInput
+              rowsMax={5}
+              multiline
+              placeholder="Write a comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    disabled={comment.trim().length < 1}
+                    onClick={commentMutation.mutate}
+                    // onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    <SendIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Box>
+        {comments_count > 1 && (
+          <Box mt={2}>
+            <Link component="button" variant="body2" onClick={toggleCommentBox}>
+              Show comments
+            </Link>
+          </Box>
+        )}
+      </CardContent>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <CommentList comments={comments} />
+      </Collapse>
     </Card>
   );
 }

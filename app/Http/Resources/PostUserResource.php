@@ -20,8 +20,6 @@ class PostUserResource extends JsonResource
       'email' => $this->email,
       'avatar' => $this->avatar,
       'username' => $this->username,
-      'posts_count' => count($this->posts),
-      'received_likes_count' => count($this->receivedLikes),
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
