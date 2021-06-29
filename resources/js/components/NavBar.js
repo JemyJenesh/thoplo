@@ -11,6 +11,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { UserContext } from "../user/UserContext";
 import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../theme";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuAppBar() {
   const classes = useStyles();
+  const { isDark, toggleTheme } = React.useContext(ThemeContext);
   const { user, logout } = React.useContext(UserContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -44,8 +48,14 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
+  const icon = isDark ? <Brightness7Icon /> : <Brightness4Icon />;
+
   return (
-    <AppBar position="sticky" elevation={1}>
+    <AppBar
+      color={isDark ? "default" : "primary"}
+      position="sticky"
+      elevation={1}
+    >
       <Container className={classes.root}>
         <Toolbar variant="dense">
           {/* <IconButton
@@ -65,6 +75,14 @@ export default function MenuAppBar() {
             Thoplo
           </Typography>
 
+          <IconButton
+            edge="end"
+            className={classes.menuButton}
+            color="inherit"
+            onClick={toggleTheme}
+          >
+            {icon}
+          </IconButton>
           <IconButton onClick={handleMenu} color="inherit" size="small">
             <Avatar
               className={classes.avatar}

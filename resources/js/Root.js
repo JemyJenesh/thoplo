@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { Paper } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import Posts from "./posts";
 import CreatePost from "./posts/CreatePost";
 import Users from "./users";
@@ -30,13 +30,14 @@ export default function Root() {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper square elevation={0} style={{ minHeight: "100%" }}>
-        <Switch>
-          <Route exact path="/" component={Posts} />
-          <Route path="/create" component={CreatePost} />
-          <Route path="/users/:username" component={Users} />
-        </Switch>
-      </Paper>
+      <CssBaseline />
+      {/* <Paper square elevation={0} style={{ minHeight: "100%" }}> */}
+      <Switch>
+        <Route exact path="/" component={Posts} />
+        <Route path="/create" component={CreatePost} />
+        <Route path="/users/:username" component={Users} />
+      </Switch>
+      {/* </Paper> */}
     </ThemeProvider>
   );
 }

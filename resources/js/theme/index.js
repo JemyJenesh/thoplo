@@ -5,7 +5,7 @@ const flat = {
   elevation: 0,
 };
 
-export const theme = (dark = false) =>
+export const theme = (dark = true) =>
   createMuiTheme({
     props: {
       MuiButton: {
@@ -28,10 +28,10 @@ export const theme = (dark = false) =>
     palette: {
       type: dark ? "dark" : "light",
       primary: {
-        main: "#1976D2",
+        main: dark ? "#90caf9" : "#1976D2",
       },
       secondary: {
-        main: "#DC004E",
+        main: dark ? "#f48fb1" : "#DC004E",
       },
     },
     shape: {

@@ -12,7 +12,7 @@ export default function Posts() {
           <Grid container spacing={3}>
             <Grid item xs={12} lg={3}>
               <div style={{ position: "sticky", top: 80 }}>
-                <Link to="/create" component={NavLink}>
+                <Link to="/create" component={NavLink} color="primary">
                   Create pixel art
                 </Link>
               </div>
