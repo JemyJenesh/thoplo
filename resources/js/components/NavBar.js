@@ -105,6 +105,9 @@ export default function MenuAppBar() {
             open={open}
             onClose={handleClose}
           >
+            <MenuItem to={`/users/${user?.username}`} component={NavLink}>
+              My profile
+            </MenuItem>
             <MenuItem onClick={logout}>Log out</MenuItem>
           </Menu>
         </Toolbar>

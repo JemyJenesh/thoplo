@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
-  <title>Toast / Login</title>
+  <title>Thoplo / Login</title>
 
 </head>
 

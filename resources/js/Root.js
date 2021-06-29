@@ -52,7 +52,7 @@ if (document.getElementById("app")) {
           </UserProvider>
         </ThemeContextProvider>
       </Router>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>,
     document.getElementById("app")
   );

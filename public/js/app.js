@@ -21399,17 +21399,15 @@ function Root() {
 }
 
 if (document.getElementById("app")) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_query__WEBPACK_IMPORTED_MODULE_14__.QueryClientProvider, {
+  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_query__WEBPACK_IMPORTED_MODULE_14__.QueryClientProvider, {
     client: queryClient,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_15__.BrowserRouter, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_15__.BrowserRouter, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_theme__WEBPACK_IMPORTED_MODULE_7__.default, {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_user_UserContext__WEBPACK_IMPORTED_MODULE_8__.default, {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(Root, {})
         })
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_query_devtools__WEBPACK_IMPORTED_MODULE_2__.ReactQueryDevtools, {
-      initialIsOpen: false
-    })]
+    })
   }), document.getElementById("app"));
 }
 
@@ -21917,7 +21915,7 @@ function MenuAppBar() {
             alt: user === null || user === void 0 ? void 0 : user.email,
             src: user === null || user === void 0 ? void 0 : user.avatar
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_material_ui_core_Menu__WEBPACK_IMPORTED_MODULE_14__.default, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_material_ui_core_Menu__WEBPACK_IMPORTED_MODULE_14__.default, {
           id: "menu-appbar",
           anchorEl: anchorEl,
           anchorOrigin: {
@@ -21931,10 +21929,14 @@ function MenuAppBar() {
           },
           open: open,
           onClose: handleClose,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__.default, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__.default, {
+            to: "/users/".concat(user === null || user === void 0 ? void 0 : user.username),
+            component: react_router_dom__WEBPACK_IMPORTED_MODULE_11__.NavLink,
+            children: "My profile"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__.default, {
             onClick: logout,
             children: "Log out"
-          })
+          })]
         })]
       })
     })
