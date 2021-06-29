@@ -9,7 +9,7 @@ export default function UserContextProvider({ children }) {
 
   const logout = () => {
     setIsLoading(true);
-    axios("http://127.0.0.1:8000/logout")
+    axios(process.env.MIX_APP_URL + "/logout")
       .then((res) => {
         window.location.href = "/";
       })

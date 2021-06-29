@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,20 @@ Route::get('/login/{social}/callback',  [AppController::class, 'getSocialCallbac
 Route::get('/logout', function () {
   Auth::logout();
 })->middleware('auth');
+
+Route::get('/refresh', function () {
+  Artisan::call('cache:clear');
+  Artisan::call('clear-compiled');
+  Artisan::call('config:clear');
+  Artisan::call('route:clear');
+  Artisan::call('view:clear');
+});
+// Route::get('/migration', function () {
+//   Artisan::call('migrate:fresh --seed');
+// });
+// Route::get('/symlink', function () {
+//   Artisan::call('storage:link');
+// });
+
+
 Route::get('{any}', [AppController::class, 'getApp'])->where('any', '.*')->middleware('auth');
