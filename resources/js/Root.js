@@ -12,7 +12,13 @@ import { ScreenLoader } from "./components";
 import ThemeContextProvider, { ThemeContext, theme } from "./theme";
 import UserProvider, { UserContext } from "./user/UserContext";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function Root() {
   const { isDark } = React.useContext(ThemeContext);

@@ -9,12 +9,13 @@ export default function UserContextProvider({ children }) {
 
   const logout = () => {
     setIsLoading(true);
-    axios("/logout")
-      .then((res) => setUser(res.data))
+    axios("http://127.0.0.1:8000/logout")
+      .then((res) => {
+        window.location.href = "/";
+      })
       .catch((e) => console.log(e))
       .finally(() => {
         setIsLoading(true);
-        window.location.href = "/";
       });
   };
 

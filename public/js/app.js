@@ -21192,7 +21192,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var queryClient = new react_query__WEBPACK_IMPORTED_MODULE_9__.QueryClient();
+var queryClient = new react_query__WEBPACK_IMPORTED_MODULE_9__.QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
 function Root() {
   var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0__.useContext(_theme__WEBPACK_IMPORTED_MODULE_6__.ThemeContext),
       isDark = _React$useContext.isDark;
@@ -22816,13 +22822,12 @@ function UserContextProvider(_ref) {
 
   var logout = function logout() {
     setIsLoading(true);
-    axios("/logout").then(function (res) {
-      return setUser(res.data);
+    axios("http://127.0.0.1:8000/logout").then(function (res) {
+      window.location.href = "/";
     })["catch"](function (e) {
       return console.log(e);
     })["finally"](function () {
       setIsLoading(true);
-      window.location.href = "/";
     });
   };
 
