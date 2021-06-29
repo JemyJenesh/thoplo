@@ -120,24 +120,52 @@ export default function Post({ post, userId = null }) {
       }),
     {
       onMutate: () => {
-        const data = queryClient.getQueryData("/posts").data.map((post) =>
-          post.id === id
-            ? {
-                ...post,
-                comments: [
-                  {
-                    id: new Date(),
-                    body: comment,
-                    created_at: new Date(),
-                    user: authUser,
-                  },
-                  ...comments,
-                ],
-              }
-            : post
-        );
-        queryClient.setQueriesData("/posts", { data });
-        setComment("");
+        if (userId) {
+          const user = queryClient.getQueryData(["/users", userId]).data;
+          const posts = user.posts.map((post) =>
+            post.id === id
+              ? {
+                  ...post,
+                  comments_count: comments_count + 1,
+                  comments: [
+                    {
+                      id: new Date(),
+                      body: comment,
+                      created_at: new Date(),
+                      user: authUser,
+                    },
+                    ...comments,
+                  ],
+                }
+              : post
+          );
+          queryClient.setQueriesData(["/users", userId], {
+            data: { ...user, posts },
+          });
+          setComment("");
+          setOpen(true);
+        } else {
+          const data = queryClient.getQueryData("/posts").data.map((post) =>
+            post.id === id
+              ? {
+                  ...post,
+                  comments_count: comments_count + 1,
+                  comments: [
+                    {
+                      id: new Date(),
+                      body: comment,
+                      created_at: new Date(),
+                      user: authUser,
+                    },
+                    ...comments,
+                  ],
+                }
+              : post
+          );
+          queryClient.setQueriesData("/posts", { data });
+          setComment("");
+          setOpen(true);
+        }
       },
     }
   );
@@ -231,7 +259,7 @@ export default function Post({ post, userId = null }) {
         {comments_count > 0 && (
           <Box mt={2}>
             <Link component="button" variant="body2" onClick={toggleCommentBox}>
-              Show comments
+              {open ? "Hide comments" : "Show comments"}
             </Link>
           </Box>
         )}

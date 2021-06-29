@@ -23537,20 +23537,46 @@ function Post(_ref) {
     });
   }, {
     onMutate: function onMutate() {
-      var data = queryClient.getQueryData("/posts").data.map(function (post) {
-        return post.id === id ? _objectSpread(_objectSpread({}, post), {}, {
-          comments: [{
-            id: new Date(),
-            body: comment,
-            created_at: new Date(),
-            user: authUser
-          }].concat(_toConsumableArray(comments))
-        }) : post;
-      });
-      queryClient.setQueriesData("/posts", {
-        data: data
-      });
-      setComment("");
+      if (userId) {
+        var _user2 = queryClient.getQueryData(["/users", userId]).data;
+
+        var posts = _user2.posts.map(function (post) {
+          return post.id === id ? _objectSpread(_objectSpread({}, post), {}, {
+            comments_count: comments_count + 1,
+            comments: [{
+              id: new Date(),
+              body: comment,
+              created_at: new Date(),
+              user: authUser
+            }].concat(_toConsumableArray(comments))
+          }) : post;
+        });
+
+        queryClient.setQueriesData(["/users", userId], {
+          data: _objectSpread(_objectSpread({}, _user2), {}, {
+            posts: posts
+          })
+        });
+        setComment("");
+        setOpen(true);
+      } else {
+        var data = queryClient.getQueryData("/posts").data.map(function (post) {
+          return post.id === id ? _objectSpread(_objectSpread({}, post), {}, {
+            comments_count: comments_count + 1,
+            comments: [{
+              id: new Date(),
+              body: comment,
+              created_at: new Date(),
+              user: authUser
+            }].concat(_toConsumableArray(comments))
+          }) : post;
+        });
+        queryClient.setQueriesData("/posts", {
+          data: data
+        });
+        setComment("");
+        setOpen(true);
+      }
     }
   });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_7__.default, {
@@ -23641,7 +23667,7 @@ function Post(_ref) {
           component: "button",
           variant: "body2",
           onClick: toggleCommentBox,
-          children: "Show comments"
+          children: open ? "Hide comments" : "Show comments"
         })
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_material_ui_core_Collapse__WEBPACK_IMPORTED_MODULE_25__.default, {
