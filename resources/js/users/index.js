@@ -31,7 +31,7 @@ export default function index() {
 
   const { name, posts, posts_count, received_likes_count, avatar } = data.data;
 
-  const pluralize = (value) => (value.length > 1 ? `${value}s` : value);
+  const pluralize = (value) => (value > 1 ? "s" : "");
 
   return (
     <Layout>
@@ -49,10 +49,11 @@ export default function index() {
               </Typography>
               <Box display="flex" justifyContent="space-between">
                 <Typography align="center" color="primary" gutterBottom>
-                  {posts_count} {pluralize("post")}
+                  {posts_count} {`post${pluralize(posts_count)}`}
                 </Typography>
                 <Typography align="center" color="secondary" gutterBottom>
-                  {received_likes_count} {pluralize("like")}
+                  {received_likes_count}{" "}
+                  {`like${pluralize(received_likes_count)}`}
                 </Typography>
               </Box>
             </div>

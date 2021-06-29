@@ -228,7 +228,7 @@ export default function Post({ post, userId = null }) {
             />
           </FormControl>
         </Box>
-        {comments_count > 1 && (
+        {comments_count > 0 && (
           <Box mt={2}>
             <Link component="button" variant="body2" onClick={toggleCommentBox}>
               Show comments
