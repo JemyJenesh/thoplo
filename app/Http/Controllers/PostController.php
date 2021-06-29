@@ -14,7 +14,7 @@ class PostController extends Controller
    */
   public function index()
   {
-    $posts = Post::with('user')->latest()->get();
+    $posts = Post::with('user')->withCount('likes')->latest()->get();
     return response($posts);
   }
 

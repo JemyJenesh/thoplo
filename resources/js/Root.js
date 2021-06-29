@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
+import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -43,6 +43,7 @@ if (document.getElementById("app")) {
           </UserProvider>
         </ThemeContextProvider>
       </Router>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>,
     document.getElementById("app")
   );

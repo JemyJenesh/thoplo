@@ -20,7 +20,7 @@ export default function UserContextProvider({ children }) {
 
   useEffect(() => {
     setIsLoading(true);
-    axios("http://127.0.0.1:8000/api/v1/user")
+    axios("/user")
       .then((res) => setUser(res.data))
       .catch((e) => console.log(e))
       .finally(() => setIsLoading(false));

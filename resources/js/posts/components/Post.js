@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
+import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,8 +13,10 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import { formatDistanceToNow } from "date-fns";
 import PixelPreview from "./PixelPreview";
+import { useMutation, useQueryClient } from "react-query";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +48,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Post({ post }) {
   const classes = useStyles();
-  const { user, body, board, created_at } = post;
+  const { id, has_user_liked, user, body, board, created_at, likes_count } =
+    post;
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(() => axios.post(`/posts/${id}/likes`), {
+    onMutate: () => {
+      const newPosts = queryClient.getQueryData("/posts").map((post) =>
+        post.id === id
+          ? {
+              ...post,
+              likes_count: likes_count + (has_user_liked ? -1 : 1),
+              has_user_liked: !has_user_liked,
+            }
+          : post
+      );
+      queryClient.setQueriesData("/posts", newPosts);
+    },
+  });
 
   return (
     <Card className={classes.root}>
@@ -65,23 +84,24 @@ export default function Post({ post }) {
           {body}
         </Typography>
       </CardContent>
-      <Box
-        display="flex"
-        justifyContent="center"
-        borderColor="divider"
-        borderTop={1}
-        // borderBottom={1}
-      >
+      <Divider />
+      <Box display="flex" justifyContent="center">
         <PixelPreview board={JSON.parse(board)} />
       </Box>
-      {/* <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+      <Divider />
+      <Box display="flex" p={1} alignItems="center" style={{ gap: 4 }}>
+        <Typography>{likes_count}</Typography>
+        <ThumbUpAltIcon fontSize="small" color="primary" />
+      </Box>
+      <Divider />
+      <CardActions disableSpacing>
+        <IconButton
+          color={has_user_liked ? "primary" : "default"}
+          onClick={mutate}
+        >
+          <ThumbUpAltIcon />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-      </CardActions> */}
+      </CardActions>
     </Card>
   );
 }

@@ -10,9 +10,28 @@ class Post extends Model
   use HasFactory;
 
   protected $guarded = [];
+  protected $appends = ['has_user_liked'];
 
+  // helpers
+  public function likedBy(User $user)
+  {
+    return $this->likes->contains('user_id', $user->id);
+  }
+
+  // accessor 
+  public function getHasUserLikedAttribute()
+  {
+    return $this->likedBy(auth()->user());
+  }
+
+  // relationship
   public function user()
   {
     return $this->belongsTo(User::class);
+  }
+
+  public function likes()
+  {
+    return $this->hasmany(Like::class);
   }
 }

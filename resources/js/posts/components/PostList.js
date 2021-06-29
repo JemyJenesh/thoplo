@@ -4,7 +4,7 @@ import { useIndex } from "../../api";
 import PostSkeleton from "./PostSkeleton";
 
 export default function PostList() {
-  const { data, isLoading } = useIndex("api/v1/posts");
+  const { data, isLoading } = useIndex("/posts");
 
   if (isLoading)
     return (
