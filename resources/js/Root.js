@@ -7,6 +7,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 import Posts from "./posts";
 import CreatePost from "./posts/CreatePost";
+import Users from "./users";
 import { ScreenLoader } from "./components";
 
 import ThemeContextProvider, { ThemeContext, theme } from "./theme";
@@ -33,6 +34,7 @@ export default function Root() {
         <Switch>
           <Route exact path="/" component={Posts} />
           <Route path="/create" component={CreatePost} />
+          <Route path="/users" component={Users} />
         </Switch>
       </Paper>
     </ThemeProvider>

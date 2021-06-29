@@ -61,7 +61,7 @@ export default function CreatePost() {
     e.preventDefault();
     setIsSubmitting(true);
     axios
-      .post("/api/v1/posts", {
+      .post("/posts", {
         body,
         board: pixels,
       })

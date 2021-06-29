@@ -52,6 +52,7 @@ class AppController extends Controller
       $newUser->name        = $socialUser->getName();
       $newUser->email       = $socialUser->getEmail() == '' ? '' : $socialUser->getEmail();
       $newUser->avatar      = $socialUser->getAvatar();
+      $newUser->username    = $socialUser->getId();
       $newUser->password    = '';
       $newUser->provider    = $account;
       $newUser->provider_id = $socialUser->getId();

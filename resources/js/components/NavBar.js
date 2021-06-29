@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,16 +10,19 @@ import Avatar from "@material-ui/core/Avatar";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { UserContext } from "../user/UserContext";
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    padding: 0,
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
+    color: "inherit",
+    textDecoration: "none",
   },
   avatar: {
     height: theme.spacing(4),
@@ -42,8 +46,9 @@ export default function MenuAppBar() {
 
   return (
     <AppBar position="sticky" elevation={1}>
-      <Toolbar variant="dense">
-        {/* <IconButton
+      <Container className={classes.root}>
+        <Toolbar variant="dense">
+          {/* <IconButton
           edge="start"
           className={classes.menuButton}
           color="inherit"
@@ -51,35 +56,41 @@ export default function MenuAppBar() {
         >
           <MenuIcon />
         </IconButton> */}
-        <Typography variant="h6" className={classes.title}>
-          Thoplo
-        </Typography>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            component={NavLink}
+            to="/"
+          >
+            Thoplo
+          </Typography>
 
-        <IconButton onClick={handleMenu} color="inherit" size="small">
-          <Avatar
-            className={classes.avatar}
-            alt={user?.email}
-            src={user?.avatar}
-          />
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={open}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={logout}>Log out</MenuItem>
-        </Menu>
-      </Toolbar>
+          <IconButton onClick={handleMenu} color="inherit" size="small">
+            <Avatar
+              className={classes.avatar}
+              alt={user?.email}
+              src={user?.avatar}
+            />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={logout}>Log out</MenuItem>
+          </Menu>
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 }
