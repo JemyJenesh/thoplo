@@ -17,6 +17,7 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import { formatDistanceToNow } from "date-fns";
 import PixelPreview from "./PixelPreview";
 import { useMutation, useQueryClient } from "react-query";
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,9 +45,17 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  cardTitle: {
+    textDecoration: "none",
+    color: "inherit",
+    fontSize: "1.1rem",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
 }));
 
-export default function Post({ post }) {
+export default function Post({ post, userId = null }) {
   const classes = useStyles();
   const { id, has_user_liked, user, body, board, created_at, likes_count } =
     post;
@@ -54,29 +63,65 @@ export default function Post({ post }) {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(() => axios.post(`/posts/${id}/likes`), {
     onMutate: () => {
-      const newPosts = queryClient.getQueryData("/posts").map((post) =>
-        post.id === id
-          ? {
-              ...post,
-              likes_count: likes_count + (has_user_liked ? -1 : 1),
-              has_user_liked: !has_user_liked,
-            }
-          : post
-      );
-      queryClient.setQueriesData("/posts", newPosts);
+      if (userId) {
+        let user = queryClient.getQueryData(["/users", userId]).data;
+
+        const newPosts = user.posts.map((post) =>
+          post.id === id
+            ? {
+                ...post,
+                likes_count: likes_count + (has_user_liked ? -1 : 1),
+                has_user_liked: !has_user_liked,
+              }
+            : post
+        );
+        const data = {
+          ...user,
+          received_likes_count:
+            user.received_likes_count + (has_user_liked ? -1 : 1),
+          posts: newPosts,
+        };
+        queryClient.setQueriesData(["/users", userId], { data });
+      } else {
+        const data = queryClient.getQueryData("/posts").data.map((post) =>
+          post.id === id
+            ? {
+                ...post,
+                likes_count: likes_count + (has_user_liked ? -1 : 1),
+                has_user_liked: !has_user_liked,
+              }
+            : post
+        );
+        queryClient.setQueriesData("/posts", { data });
+      }
     },
   });
 
   return (
     <Card className={classes.root}>
       <CardHeader
-        avatar={<Avatar src={user.avatar} className={classes.avatar} />}
+        avatar={
+          <Avatar
+            src={user.avatar}
+            className={classes.avatar}
+            component={NavLink}
+            to={`/users/${user.username}`}
+          />
+        }
         // action={
         //   <IconButton aria-label="settings">
         //     <MoreVertIcon />
         //   </IconButton>
         // }
-        title={user.name}
+        title={
+          <Typography
+            component={NavLink}
+            to={`/users/${user.username}`}
+            className={classes.cardTitle}
+          >
+            {user.name}
+          </Typography>
+        }
         subheader={formatDistanceToNow(new Date(created_at))}
       />
       <CardContent className={classes.postBody}>
@@ -86,7 +131,7 @@ export default function Post({ post }) {
       </CardContent>
       <Divider />
       <Box display="flex" justifyContent="center">
-        <PixelPreview board={JSON.parse(board)} />
+        <PixelPreview board={board} />
       </Box>
       <Divider />
       <Box display="flex" p={1} alignItems="center" style={{ gap: 4 }}>

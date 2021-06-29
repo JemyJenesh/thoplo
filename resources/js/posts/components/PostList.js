@@ -13,9 +13,10 @@ export default function PostList() {
         <PostSkeleton />
       </>
     );
+  const posts = data.data;
   return (
     <div>
-      {data.map((post) => (
+      {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
     </div>

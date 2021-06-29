@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 
 Route::group(['prefix' => 'v1'], function () {
   Route::group(['middleware' => 'auth:api'], function () {
@@ -15,5 +16,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/posts', [PostController::class, 'store']);
 
     Route::post('/posts/{post}/likes', [LikeController::class, 'store']);
+
+    Route::get('/users/{user:username}', [UserController::class, 'show']);
   });
 });

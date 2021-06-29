@@ -34,7 +34,7 @@ export default function Root() {
         <Switch>
           <Route exact path="/" component={Posts} />
           <Route path="/create" component={CreatePost} />
-          <Route path="/users" component={Users} />
+          <Route path="/users/:username" component={Users} />
         </Switch>
       </Paper>
     </ThemeProvider>

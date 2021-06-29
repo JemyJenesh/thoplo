@@ -18,11 +18,7 @@ class Post extends Model
     return $this->likes->contains('user_id', $user->id);
   }
 
-  // accessor 
-  public function getHasUserLikedAttribute()
-  {
-    return $this->likedBy(auth()->user());
-  }
+
 
   // relationship
   public function user()

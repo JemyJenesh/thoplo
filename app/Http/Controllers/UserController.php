@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PostResource;
-use App\Models\Post;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class UserController extends Controller
 {
   /**
    * Display a listing of the resource.
@@ -15,8 +15,7 @@ class PostController extends Controller
    */
   public function index()
   {
-    $posts = Post::latest()->get();
-    return  PostResource::collection($posts);
+    //
   }
 
   /**
@@ -27,32 +26,28 @@ class PostController extends Controller
    */
   public function store(Request $request)
   {
-    $post = auth()->user()->posts()->create([
-      'body' => $request->body,
-      'board' => json_encode($request->board),
-    ]);
-    return new PostResource($post);
+    //
   }
 
   /**
    * Display the specified resource.
    *
-   * @param  \App\Models\Post  $post
+   * @param  \App\Models\User  $user
    * @return \Illuminate\Http\Response
    */
-  public function show(Post $post)
+  public function show(User $user)
   {
-    return new PostResource($post);
+    return new UserResource($user);
   }
 
   /**
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Models\Post  $post
+   * @param  \App\Models\User  $user
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, Post $post)
+  public function update(Request $request, User $user)
   {
     //
   }
@@ -60,10 +55,10 @@ class PostController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  \App\Models\Post  $post
+   * @param  \App\Models\User  $user
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Post $post)
+  public function destroy(User $user)
   {
     //
   }
