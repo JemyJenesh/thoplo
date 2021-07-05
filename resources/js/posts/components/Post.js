@@ -224,38 +224,40 @@ export default function Post({ post, userId = null }) {
       </CardContent>
       <Divider />
       <CardContent>
-        <Box display="flex" alignItems="flex-start">
-          <Avatar
-            src={user.avatar}
-            component={NavLink}
-            to={`/users/${user.username}`}
-          />
-          <FormControl
-            variant="outlined"
-            fullWidth
-            className={classes.commentBox}
-          >
-            <OutlinedInput
-              rowsMax={5}
-              multiline
-              placeholder="Write a comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    disabled={comment.trim().length < 1}
-                    onClick={commentMutation.mutate}
-                    // onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
+        {authUser && (
+          <Box display="flex" alignItems="flex-start">
+            <Avatar
+              src={authUser.avatar}
+              component={NavLink}
+              to={`/users/${authUser.username}`}
             />
-          </FormControl>
-        </Box>
+            <FormControl
+              variant="outlined"
+              fullWidth
+              className={classes.commentBox}
+            >
+              <OutlinedInput
+                rowsMax={5}
+                multiline
+                placeholder="Write a comment"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      disabled={comment.trim().length < 1}
+                      onClick={commentMutation.mutate}
+                      // onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
+        )}
         {comments_count > 0 && (
           <Box mt={2}>
             <Link component="button" variant="body2" onClick={toggleCommentBox}>

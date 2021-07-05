@@ -23630,13 +23630,13 @@ function Post(_ref) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_material_ui_icons_ChatBubbleOutline__WEBPACK_IMPORTED_MODULE_19__.default, {})]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_16__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_15__.default, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_material_ui_core_Box__WEBPACK_IMPORTED_MODULE_17__.default, {
+      children: [authUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_material_ui_core_Box__WEBPACK_IMPORTED_MODULE_17__.default, {
         display: "flex",
         alignItems: "flex-start",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_material_ui_core_Avatar__WEBPACK_IMPORTED_MODULE_9__.default, {
-          src: user.avatar,
+          src: authUser.avatar,
           component: react_router_dom__WEBPACK_IMPORTED_MODULE_10__.NavLink,
-          to: "/users/".concat(user.username)
+          to: "/users/".concat(authUser.username)
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_20__.default, {
           variant: "outlined",
           fullWidth: true,

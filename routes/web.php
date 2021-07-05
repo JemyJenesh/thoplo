@@ -22,6 +22,7 @@ Route::get('/login/{social}', [AppController::class, 'getSocialRedirect'])->midd
 Route::get('/login/{social}/callback',  [AppController::class, 'getSocialCallback'])->middleware('guest');
 Route::get('/logout', function () {
   Auth::logout();
+  return redirect('/login');
 })->middleware('auth');
 
 Route::get('/refresh', function () {
@@ -39,4 +40,4 @@ Route::get('/refresh', function () {
 // });
 
 
-Route::get('{any}', [AppController::class, 'getApp'])->where('any', '.*')->middleware('auth');
+Route::get('{any}', [AppController::class, 'getApp'])->where('any', '.*');

@@ -13,7 +13,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/user', function (Request $request) {
       return $request->user();
     });
-    Route::get('/posts', [PostController::class, 'index']);
     Route::post('/posts', [PostController::class, 'store']);
 
     Route::post('/posts/{post}/likes', [LikeController::class, 'store']);
@@ -21,4 +20,5 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/users/{user:username}', [UserController::class, 'show']);
   });
+  Route::get('/posts', [PostController::class, 'index']);
 });

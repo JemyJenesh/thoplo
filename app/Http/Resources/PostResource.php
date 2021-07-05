@@ -24,7 +24,7 @@ class PostResource extends JsonResource
       'comments' => CommentResource::collection($this->comments()->latest()->get()),
       'likes_count' => count($this->likes),
       'comments_count' => count($this->comments),
-      'has_user_liked' => $this->likedBy(auth()->user()),
+      'has_user_liked' => auth()->check() ? $this->likedBy(auth()->user('api')) : false,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];
